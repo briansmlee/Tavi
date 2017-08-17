@@ -101,7 +101,7 @@ for board in response_array_of_dict:
 
     resp = requests.get(cards_url, params=params_key_and_token, data=arguments).json()
 
-    print('Following are card names for Welcome Board:')
+    print('\n\n\nFollowing are card names for Welcome Board:\n\n\n')
 
 
     for card in resp:

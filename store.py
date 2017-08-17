@@ -3,6 +3,7 @@
 
 import requests           # a 3rd party library. `pip install requests`
 import json               # all responses from Trello come back as JSON
+from db import add_card, print_instances
 from pprint import pprint # this is a handy utility for printing dictionaries in a human readable way
 
 
@@ -27,7 +28,7 @@ base = 'https://trello.com/1/'
 
 # Build out the URL based on the documentation
 # boards_url = base + 'members/me/boards'
-boards_url = base + 'members'
+boards_url = base + 'members/me/boards'
 
 # Let's store our API key and token as parameters
 params_key_and_token = {'key':key,'token':token}
@@ -48,9 +49,11 @@ response = requests.get(boards_url, params=params_key_and_token, data=arguments)
 # The following will give us an array of dictionaries
 response_array_of_dict = response.json()
 
-# print("pretty printed:\n")
-# pprint(response_array_of_dict)
 
+
+
+
+##### adds cards to DB
 print("아래의 보드 중 카드 데이터를 추출할 보드를 선택해주세요:\n")
 
 # Let's go ahead and iterate through the list of boards and print the name of each board
@@ -66,5 +69,16 @@ cards_url = base + 'boards/' + board_id + '/cards'
 # cards in target board. (list of dicts)
 resp = requests.get(cards_url, params=params_key_and_token, data=arguments).json()
 
-pprint(resp)
+# pprint(resp)
+
+# keys to extract from card
+keys = ['name', 'desc']
+
+for card in resp:
+    filtered_card = { key: card[key] for key in keys }
+    add_card(filtered_card)
+
+
+print_instances()
+    
 

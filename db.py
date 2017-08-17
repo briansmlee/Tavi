@@ -42,9 +42,11 @@ def add_card(dct):
     session.commit()
 
 
-for instance in session.query(Card).order_by(Card.id):
-    print(instance.name, instance.desc)
-    
+def print_instances():
+    for instance in session.query(Card).order_by(Card.id):
+        print("%d %.50s \t\t %.50s" % (instance.id, instance.name, instance.desc[0:50]))
+
+
 
 
 
