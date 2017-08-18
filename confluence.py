@@ -2,22 +2,25 @@
 
 import requests
 import json
-from settings import conf_addr
+import pprint
+from settings import conf_addr, auth
 
 class Conf:
     """ Confluence class for using Server REST API """
     base_addr = conf_addr # base address for API calls
+    addr_ = base_addr + '/rest/api/content/' 
     username = ''
     password = ''
     
-    auth = ('admin', 'admin')
-    headers = ({'Content-Type' : 'application/json'})
+    auth_ = auth
+    headers_ = ({'Content-Type' : 'application/json'})
     
-    def printResponse(r):
-	print '{} {}\n'.format(json.dumps(r.json(), sort_keys=True, \
-            indent=4, separators=(',', ': ')), r)
+    def printResponse(self, r):
+        pass
 
-    def form_pagedata(self):
+
+    def form_pageData(self):
+        """forms page data from input"""
         data = {}
         data['type'] = 'page',
         data['title'] = 'my test Page'
@@ -29,14 +32,41 @@ class Conf:
                     }
                 }
         
-        return page
+        return data
+    
+    def get_page(self):
+        """gets page"""
+        url = Conf.base_addr + '/rest/api/content'
+        params_ = {
+                'type' : 'page',
+                # 'spacekey'
+                'title': 'Retrospective',
+                }
+                
+        r = requests.get(url,
+	    params = params_,
+	    auth= Conf.auth_
+            )
+        print(r.json())
+        
+        
 
 
-    def create_page(self, dct):
+    def create_page(self):
         """
            creates page with content from input dictionary
         """
-        r = requests.post(url)
+        pageData = self.form_pageData()
+        r = requests.post(Conf.addr_, data=json.dumps(pageData), 
+                auth = Conf.auth_, headers = Conf.headers_)
+        print(r)
+
+if __name__ == "__main__":
+    conf = Conf()
+    conf.get_page()
+    print("done")
+        
+        
     
     
     
