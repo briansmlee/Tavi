@@ -19,25 +19,73 @@ class Trello:
             'key' : key,
             'token' : token
             }
+    # Since we only want the name of the board, let's supply the 'fields' argument as well. 
+    # We're also going to ask for lists, to be used later.
+    arguments = {'fields': 'name', 'lists': 'open'}
     
     base = 'https://trello.com/1/' # The base url for all reqs
-    urls = {
-            'get_boards' : base
-            'get_lists_of_board' : base + '/boards/[board_id]/lists'
-            'get_cards_of_list' : base + '/lists/[list_id]/cards' 
-            }
     
+    # below are unused for now
+    # urls = {
+    #         'get_boards' : base
+    #         'get_lists_of_board' : base + '/boards/[board_id]/lists'
+    #         'get_cards_of_list' : base + '/lists/[list_id]/cards' 
+    #         }
+
     def get_a_on_b(self, a, b, b_id):
         """
-        gets all As on a specific B. 
-        for example, get cards on a board
+        ref: https://trello.readme.io/docs/api-introduction
+        generalized method to get all As on a specific B. 
+        for example, get cards on a board with board_id
         """
-        # do error checking
+        # do error checking prior to forming url
+        
         url = base + a + '/' + b_id + '/' + b
-        
-        
+        resp = requests.get(url, params=self.params, data=argument)
+        return resp.json()
+       
+    def mmain(self):
+        """main functionality on Trello side.
+        prompts user to choose a list,
+        gets all cards on list,
+        and returns formed pageData from cards
+        """
+        list_id = prompt_list()
+        cards = get_a_on_b(a='cards', b='lists', b_id=list_id)
+        pprint(cards) #TEST
+        page = cards_to_page(cards) 
+        pprint(page) #TEST
+        return page
 
-    
+    def prompt_list():
+        """
+        prompts user to choose a list (and space!)
+        """ 
+        # hard-coded for now.
+        list_id = 'abc' 
+        return list_id
+
+    def list_to_page(self, list_of_cards):
+        """forms page dict from cards"""
+        page = {}
+        page['title'] = # set to list title
+        page['space'] = {'key' : 'AP'} # prompt usr to select space
+        page['body']  = {
+                "storage" : {
+                    "value" : ""
+                    "representation" : "storage"
+                    }
+                }
+        
+        # add card content for all cards
+        for card, idx in enumerate(list_of_cards[''], start=1):
+            header = '<h' + idx + '>' + card['title'] + '</h' + idx + '>\n'
+            body = '<p>' + card['body'] + '</p>\n\n'
+            content = header + body 
+            page['body']['storage']['value'] += content
+        
+        return page
+            
     def cards_in_list(self, ):
         """ get all cards from list """
         list_id = get_list_id()
@@ -49,46 +97,47 @@ class Trello:
         # test for card names
 
 
-    ##### simplify four get mthds below
+    ##### FOUR METHODS BELOW ARE NO LONGER USED
+    ##### see get_a_on_b
     #
-    def get_list_id(self):
-        """ 
-        gets id of the target list.
-        currently takes first list in board.
-        """
-        board_id = get_board_id()
-        lists = get_all_lists(board_id)
-        firstList = lists[0]
-        list_id = firstList['id']
-        return list_id 
-
-    def get_all_lists(self, board_id):
-        """
-        gets all lists
-        """
-        # GET /1/boards/[board_id]/lists - Get an array of Lists on a board
-        lists_ur 
-        resp = requests.get(lists_url, params=self.params_key_and_token, data=arguments)
-        return resp.json()
-    
-    def get_board_id(self):
-        """
-        gets board id
-        currently takes first board
-        """
-        boards = self.get_all_boards()
-        firstBoard = boards[0]
-        board_id = firstBoard['id']
-        return board_id
-    
-    def get_all_boards(self):
-        """
-        gets list of all boards
-        """
-        boards_url = self.base + 'members/me/boards'
-        resp = requests.get(boards_url, params=self.params_key_and_token, data=arguments)
-        return resp.json()
-        
+    # def get_list_id(self):
+    #     """ 
+    #     gets id of the target list.
+    #     currently takes first list in board.
+    #     """
+    #     board_id = get_board_id()
+    #     lists = get_all_lists(board_id)
+    #     firstList = lists[0]
+    #     list_id = firstList['id']
+    #     return list_id 
+    #
+    # def get_all_lists(self, board_id):
+    #     """
+    #     gets all lists
+    #     """
+    #     # GET /1/boards/[board_id]/lists - Get an array of Lists on a board
+    #     lists_ur 
+    #     resp = requests.get(lists_url, params=self.params_key_and_token, data=arguments)
+    #     return resp.json()
+    # 
+    # def get_board_id(self):
+    #     """
+    #     gets board id
+    #     currently takes first board
+    #     """
+    #     boards = self.get_all_boards()
+    #     firstBoard = boards[0]
+    #     board_id = firstBoard['id']
+    #     return board_id
+    # 
+    # def get_all_boards(self):
+    #     """
+    #     gets list of all boards
+    #     """
+    #     boards_url = self.base + 'members/me/boards'
+    #     resp = requests.get(boards_url, params=self.params_key_and_token, data=arguments)
+    #     return resp.json()
+    #     
 
         
         
