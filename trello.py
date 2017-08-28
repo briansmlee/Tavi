@@ -4,6 +4,7 @@ import requests           # a 3rd party library. `pip install requests`
 import json               # all responses from Trello come back as JSON
 from db import add_card, print_instances
 from pprint import pprint # this is a handy utility for printing dictionaries in a human readable way
+from settings import trello_key, trello_token
 
 class Trello:
     # TODO: need to use OAuth to hide key and token
@@ -14,27 +15,61 @@ class Trello:
     #  token = trello_token
     key = trello_key
     token = trello_token
-    params_key_and_token = { 
+    params = { 
             'key' : key,
             'token' : token
             }
+    
+    base = 'https://trello.com/1/' # The base url for all reqs
+    urls = {
+            'get_boards' : base
+            'get_lists_of_board' : base + '/boards/[board_id]/lists'
+            'get_cards_of_list' : base + '/lists/[list_id]/cards' 
+            }
+    
+    def get_a_on_b(self, a, b, b_id):
+        """
+        gets all As on a specific B. 
+        for example, get cards on a board
+        """
+        # do error checking
+        url = base + a + '/' + b_id + '/' + b
+        
+        
 
-    base = 'https://trello.com/1/' # The base url for every request is the same
     
     def cards_in_list(self, ):
         """ get all cards from list """
+        list_id = get_list_id()
+        resp = requests.get(
         
         # get target list id
         # form url
         # send req, get resp
         # test for card names
-    
-    def get_list_id(self, params):
+
+
+    ##### simplify four get mthds below
+    #
+    def get_list_id(self):
         """ 
         gets id of the target list.
         currently takes first list in board.
         """
-        
+        board_id = get_board_id()
+        lists = get_all_lists(board_id)
+        firstList = lists[0]
+        list_id = firstList['id']
+        return list_id 
+
+    def get_all_lists(self, board_id):
+        """
+        gets all lists
+        """
+        # GET /1/boards/[board_id]/lists - Get an array of Lists on a board
+        lists_ur 
+        resp = requests.get(lists_url, params=self.params_key_and_token, data=arguments)
+        return resp.json()
     
     def get_board_id(self):
         """
@@ -43,7 +78,8 @@ class Trello:
         """
         boards = self.get_all_boards()
         firstBoard = boards[0]
-        # 
+        board_id = firstBoard['id']
+        return board_id
     
     def get_all_boards(self):
         """
