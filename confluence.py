@@ -21,12 +21,12 @@ class Conf:
     def form_pageData(self):
         """forms page data from input"""
         data = {}
-        data['type'] = "page"
-        data['title'] = "API 테스트용 페이지"
-        data['space'] = {"key":"AP"}
+        data['type'] = "page" # fix
+        data['title'] = "API 테스트용 페이지" # Trello list name
+        data['space'] = {"key":"AP"} # prompt usr to select
         data['body'] = {
                 "storage": {
-                    "value": "<p>This is a new page</p>",
+                    "value": "<p>This is a new page</p>", # format as html page
                     "representation": "storage"
                     }
                 }
@@ -68,10 +68,5 @@ if __name__ == "__main__":
     print("done")
         
         
-    
-    
-    
-
-    
 
 
