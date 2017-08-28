@@ -49,24 +49,32 @@ class Conf:
             )
         print(r.json())
         
-        
 
+    # def create_page(self):
+    #     """
+    #        creates page with content from input dictionary
+    #     """
+    #     
+    #     pageData = self.form_pageData()
+    #     r = requests.post(Conf.create_addr, data=json.dumps(pageData), 
+    #             auth = Conf.auth_, headers = Conf.headers_)
+    #     r.json()
+    #     print(r)
 
-    def create_page(self):
+    def create_page(self, pageData):
         """
-           creates page with content from input dictionary
+        creates page with content from input dictionary
         """
-        pageData = self.form_pageData()
         r = requests.post(Conf.create_addr, data=json.dumps(pageData), 
                 auth = Conf.auth_, headers = Conf.headers_)
         r.json()
-        print(r)
-
-if __name__ == "__main__":
-    conf = Conf()
-    conf.create_page()
-    print("done")
+        pprint(r) #TEST
         
+# if __name__ == "__main__":
+#     conf = Conf()
+#     conf.create_page()
+#     print("done")
+#         
         
 
 

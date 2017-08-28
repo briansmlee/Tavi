@@ -40,8 +40,8 @@ class Trello:
         """
         # do error checking prior to forming url
         
-        url = base + a + '/' + b_id + '/' + b
-        resp = requests.get(url, params=self.params, data=argument)
+        url = self.base + b + '/' + b_id + '/' + a
+        resp = requests.get(url, params=self.params, data=self.arguments)
         return resp.json()
        
     def mmain(self):
@@ -57,28 +57,28 @@ class Trello:
         pprint(page) #TEST
         return page
 
-    def prompt_list():
+    def prompt_list(self):
         """
         prompts user to choose a list (and space!)
         """ 
         # hard-coded for now.
-        list_id = 'abc' 
+        list_id = '5996468ac054260f997db329'
         return list_id
 
-    def list_to_page(self, list_of_cards):
+    def list_to_page(self, cards_list):
         """forms page dict from cards"""
         page = {}
-        page['title'] = # set to list title
+        page['title'] = cards_list['title']# set to list title
         page['space'] = {'key' : 'AP'} # prompt usr to select space
         page['body']  = {
                 "storage" : {
-                    "value" : ""
+                    "value" : "",
                     "representation" : "storage"
                     }
                 }
         
         # add card content for all cards
-        for card, idx in enumerate(list_of_cards[''], start=1):
+        for card, idx in enumerate(cards_list[''], start=1):
             header = '<h' + idx + '>' + card['title'] + '</h' + idx + '>\n'
             body = '<p>' + card['body'] + '</p>\n\n'
             content = header + body 
@@ -86,19 +86,18 @@ class Trello:
         
         return page
             
-    def cards_in_list(self, ):
-        """ get all cards from list """
-        list_id = get_list_id()
-        resp = requests.get(
-        
-        # get target list id
-        # form url
-        # send req, get resp
-        # test for card names
-
-
-    ##### FOUR METHODS BELOW ARE NO LONGER USED
+    ##### FIVE METHODS BELOW ARE NO LONGER USED
     ##### see get_a_on_b
+    #####
+    # def cards_in_list(self, ):
+    #     """ get all cards from list """
+    #     list_id = get_list_id()
+    #     resp = requests.get(
+    #     
+    #     # get target list id
+    #     # form url
+    #     # send req, get resp
+    #     # test for card names
     #
     # def get_list_id(self):
     #     """ 
@@ -138,9 +137,6 @@ class Trello:
     #     resp = requests.get(boards_url, params=self.params_key_and_token, data=arguments)
     #     return resp.json()
     #     
-
-        
-        
     
     def get_cards(self):
 
@@ -189,4 +185,30 @@ class Trello:
             add_card(filtered_card)
 
         print_instances()
+
+if __name__ == "__main__":
+    # script for testing
+    t = Trello()
+    
+    boards = t.get_cards()
+    # pprint(boards)
+
+    # b = boards['name' == 'TtoC'] 
+    for board in boards:
+        if board['name'] == 'TtoC':
+            b = board
+
+    print(b['id'], b['name'])
+    lists = t.get_a_on_b(a='lists', b='boards', b_id=b['id'])
+    pprint(lists)
+    
+    list_id = t.prompt_list() # hardcoded for now
+    cards = t.get_a_on_b(a='cards', b='lists', b_id=list_id)
+    for card in cards:
+        pprint(card)
+
+    # use 'desc' and 'name' of card 
+    
+    
+
  
