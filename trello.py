@@ -114,17 +114,17 @@ class Trello:
         # h = HTML()
         body = ''
         if headers:
-            pass
             # add table of contents
-            # table_of_contents = '<p><ac:structured-macro ac:macro-id=\
-            #"09b161a6-bce0-4449-8e49-7dcabd03c68b"\
-            #ac:name="toc" ac:schema-version="1" /></p>'
-            # body += table_of_contents
+            body += '<h4>목차</h4>'
+            table_of_contents = '<p><ac:structured-macro \
+            ac:name="toc" ac:schema-version="1" /></p>'
+            # ac:macro-id="09b161a6-bce0-4449-8e49-7dcabd03c68b"\
+            body += table_of_contents
 
         for idx, card in enumerate(cards, start=1):
             # if table of contents is on, add headers
             if headers:
-                header = '<h3>(' + str(idx) + ')</h3>' # h3 for now
+                header = '<h4>(' + str(idx) + ')</h4>' # h3 for now
                 body += header
             
             # name doesn't have newline
