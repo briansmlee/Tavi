@@ -65,8 +65,8 @@ class Trello:
         returns list name and id
         """ 
         # hard-coded for now.
-        list_id = '5996468ac054260f997db329'
-        list_name = 'TtoC'
+        list_id = '598bf789aa7a8937cfde79b8'
+        list_name = '테스트용 트렐로 리스트'
         return list_id, list_name
 
     def list_to_page(self, cards, list_name):
@@ -193,25 +193,25 @@ class Trello:
 
 
 
-# script for testing
-if __name__ == "__main__1":
+# unused script for testing
+if __name__ == "__main__":
     t = Trello()
     page = t.mmain()
 
     boards = t.get_cards()
-    # pprint(boards)
+    pprint(boards)
 
     # b = boards['name' == 'TtoC'] 
     for board in boards:
         if board['name'] == 'TtoC':
             b = board
 
-    # print(b['id'], b['name'])
+    # print( b['id'], b['name'])
     lists = t.get_a_on_b(a='lists', b='boards', b_id=b['id'])
     pprint(lists)
     print('\n\n\n')
     
-    list_id = t.prompt_list() # hardcoded for now
+    list_id, list_name = t.prompt_list() # hardcoded for now
     cards = t.get_a_on_b(a='cards', b='lists', b_id=list_id)
     pprint(cards)
 
@@ -220,7 +220,7 @@ if __name__ == "__main__1":
 
     # use 'desc' and 'name' of card
 
-if __name__ == "__main__":
+if __name__ == "__main__111":
     t = Trello()
     page = t.mmain()
     

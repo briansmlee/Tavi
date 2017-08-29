@@ -40,18 +40,18 @@ class Confluence:
 
     def get_page(self):
         """gets page"""
-        url = Conf.base_addr + '/rest/api/content'
+        # url = self.base_addr + '/rest/api/content'
+        url = self.base_addr + '/rest/api/content/2228952?expand=body.storage'
         params_ = {
                 'type' : 'page',
-                # 'spacekey'
-                'title': 'Retrospective',
+                'title': 'test: get conf page (check if html)',
                 }
                 
-        r = requests.get(url,
-	    params = params_,
-	    auth= Conf.auth_
-            )
-        print(r.json())
+        resp = requests.get(url, params = params_, auth= self.auth)
+        print(resp)
+        print(resp.json())
+        return resp.json()
+        
         
 
     # def create_page(self):
@@ -79,6 +79,8 @@ class Confluence:
 if __name__ == "__main__":
     t = Trello()
     conf = Confluence()
-    conf.create_page(t.mmain())
-    print("done")
+    page = conf.get_page() 
+    print(page)
+    # conf.create_page(t.mmain())
+    # print("done")
        
