@@ -80,7 +80,7 @@ if __name__ == "__main__":
     t = Trello()
     conf = Confluence()
     page = conf.get_page() 
-    print(page)
+    # print(page)
     # conf.create_page(t.mmain())
     # print("done")
        

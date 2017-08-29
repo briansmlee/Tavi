@@ -2,6 +2,7 @@
 
 import requests           # a 3rd party library. `pip install requests`
 import json               # all responses from Trello come back as JSON
+import markdown as md
 from db import add_card, print_instances
 from pprint import pprint # this is a handy utility for printing dictionaries in a human readable way
 from settings import trello_key, trello_token
@@ -52,10 +53,10 @@ class Trello:
         """
         list_id, list_name = self.prompt_list()
         cards = self.get_a_on_b(a='cards', b='lists', b_id=list_id)
-        pprint(cards) #TEST
+        # pprint(cards) #TEST
 
         page = self.list_to_page(cards, list_name) 
-        pprint(page) #TEST
+        # pprint(page) #TEST
         
         return page
 
@@ -81,15 +82,64 @@ class Trello:
                     "representation" : "storage"
                     }
                 }
-        
+
+        ##### now using markdown...
         # add card content for all cards
-        for idx, card in enumerate(cards, start=1):
-            header = '<h' + str(idx) + '>' + card['name'] + '</h' + str(idx) + '>\n'
-            body = '<p>' + card['desc'] + '</p>\n\n'
-            content = header + body 
-            page['body']['storage']['value'] += content
+        # for idx, card in enumerate(cards, start=1):
+        #     header = '<h' + str(idx) + '>' + card['name'] + '</h' + str(idx) + '>\n'
+        #     body = '<p>' + card['desc'] + '</p>\n\n'
+        #     content = header + body 
+        #     page['body']['storage']['value'] += content
         
+        # text = ''
+        # for card in cards:
+        #     # add attachments and comments here.
+        #     name = card['name']
+        #     desc = card['desc']
+        #     
+        #     
+
+        #     for 
+        #     card_text = card['name'] + '\n\n' + card['desc'] + '\n\n'
+        #     print(card_text) 
+        #     card_text1 = md.markdown(card['name']) + md.markdown(card['desc'])
+        #     print(card_text1)
+        #     text += card_text
+
+        page['body']['storage']['value'] = self.build_page_body(cards)
         return page
+    
+    def build_page_body(self, cards, headers=True):
+        """builds html body from cards data""" 
+        # h = HTML()
+        body = ''
+        if headers:
+            pass
+            # add table of contents
+            # table_of_contents = '<p><ac:structured-macro ac:macro-id=\
+            #"09b161a6-bce0-4449-8e49-7dcabd03c68b"\
+            #ac:name="toc" ac:schema-version="1" /></p>'
+            # body += table_of_contents
+
+        for idx, card in enumerate(cards, start=1):
+            # if table of contents is on, add headers
+            if headers:
+                header = '<h3>(' + str(idx) + ')</h3>' # h3 for now
+                body += header
+            
+            # name doesn't have newline
+            # body += h.p(card['name'])
+            p = '<p>' + card['name'] + '</p>'
+            body += p
+            
+            # linebreak card description
+            # handle lists(lu) here
+            for line in card['desc'].split('\n'):
+                if line: # check if empty
+                   body += ('<p>' + line + '</p>')
+
+        print(body)           
+        return body
             
     ##### FIVE METHODS BELOW ARE NO LONGER USED
     ##### see get_a_on_b
@@ -194,7 +244,7 @@ class Trello:
 
 
 # unused script for testing
-if __name__ == "__main__":
+if __name__ == "__main__111":
     t = Trello()
     page = t.mmain()
 
@@ -220,7 +270,7 @@ if __name__ == "__main__":
 
     # use 'desc' and 'name' of card
 
-if __name__ == "__main__111":
+if __name__ == "__main__":
     t = Trello()
     page = t.mmain()
     
