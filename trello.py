@@ -72,6 +72,7 @@ class Trello:
     def list_to_page(self, cards, list_name):
         """forms page dict from cards"""
         page = {}
+        page['type']  = 'page'
         page['title'] = list_name
         page['space'] = {'key' : 'AP'} # prompt usr to select space
         page['body']  = {

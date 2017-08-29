@@ -1,39 +1,43 @@
 # posts pages to confluence server
 
+from trello import Trello
 import requests
 import json
 import pprint
-from settings import conf_home, auth
+from settings import conf_home, conf_auth
 
-class Conf:
+class Confluence:
     """ Confluence class for using Server REST API """
+    # CLASS VARS 
+    auth = conf_auth 
     base_addr = conf_home # base address for API calls
     create_addr = base_addr + '/rest/api/content/' # addr for creating content
-    
-    auth_ = auth
-    headers_ = ({'Content-Type' : 'application/json'})
+    headers = ({'Content-Type' : 'application/json'})
     # headers_admin = ('admin' , 'admin')
     
-    def printResponse(self, r):
+    def print_Response(self, resp):
         pass
 
 
-    def form_pageData(self):
-        """forms page data from input"""
-        data = {}
-        data['type'] = "page" # fix
-        data['title'] = "API 테스트용 페이지" # Trello list name
-        data['space'] = {"key":"AP"} # prompt usr to select
-        data['body'] = {
-                "storage": {
-                    "value": "<p>This is a new page</p>", # format as html page
-                    "representation": "storage"
-                    }
-                }
-        
-        print(data)
-        return data
-    
+    ##### This functionality has been moved to trello.py
+    #
+    # def form_pageData(self):
+    #     """forms page data from input"""
+    #     data = {}
+    #     data['type'] = "page" # fix
+    #     data['title'] = "API 테스트용 페이지" # Trello list name
+    #     data['space'] = {"key":"AP"} # prompt usr to select
+    #     data['body'] = {
+    #             "storage": {
+    #                 "value": "<p>This is a new page</p>", # format as html page
+    #                 "representation": "storage"
+    #                 }
+    #             }
+    #     
+    #     print(data)
+    #     return data
+    #
+
     def get_page(self):
         """gets page"""
         url = Conf.base_addr + '/rest/api/content'
@@ -61,20 +65,20 @@ class Conf:
     #     r.json()
     #     print(r)
 
-    def create_page(self, pageData):
+    def create_page(self, page):
         """
         creates page with content from input dictionary
         """
-        r = requests.post(Conf.create_addr, data=json.dumps(pageData), 
-                auth = Conf.auth_, headers = Conf.headers_)
-        r.json()
-        pprint(r) #TEST
+        resp = requests.post(self.create_addr, data=json.dumps(page), 
+                auth = self.auth, headers = self.headers)
+        print(resp)
+        resp = resp.json()
+        print(resp)
+        pprint(resp) #TEST
         
-# if __name__ == "__main__":
-#     conf = Conf()
-#     conf.create_page()
-#     print("done")
-#         
-        
-
-
+if __name__ == "__main__":
+    t = Trello()
+    conf = Confluence()
+    conf.create_page(t.mmain())
+    print("done")
+       
