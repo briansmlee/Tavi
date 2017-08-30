@@ -1,7 +1,10 @@
-var express = require('express');
-var cors = require('cors');
+// server side
 
+var express = require('express');
+var cors = require('cors'); // assets are served over HTTPS
 var app = express();
+
+// app configs
 
 // your manifest must have appropriate CORS headers, you could also use '*'
 app.use(cors({ origin: '*' }));
