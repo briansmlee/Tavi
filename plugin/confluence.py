@@ -1,6 +1,6 @@
 # posts pages to confluence server
 
-from trello import Trello
+# from trello import Trello
 import requests
 import json
 import pprint
@@ -53,18 +53,6 @@ class Confluence:
         return resp.json()
         
         
-
-    # def create_page(self):
-    #     """
-    #        creates page with content from input dictionary
-    #     """
-    #     
-    #     pageData = self.form_pageData()
-    #     r = requests.post(Conf.create_addr, data=json.dumps(pageData), 
-    #             auth = Conf.auth_, headers = Conf.headers_)
-    #     r.json()
-    #     print(r)
-
     def create_page(self, page):
         """
         creates page with content from input dictionary
@@ -75,11 +63,27 @@ class Confluence:
         resp = resp.json()
         print(resp)
         pprint(resp) #TEST
+
+    def get_spaces(self):
+        """
+        gets info of all spaces
+        returns name : key dict
+        """ 
+        url = self.base_addr + '/rest/api/space'
+        params = {}
+        resp = requests.get(url, auth=self.auth).json()
+        
+        result = { space['name'] : space['key'] for space in resp['results'] } 
+        print(result) 
+        return result
+       
+        
         
 if __name__ == "__main__":
-    t = Trello()
+    # t = Trello()
     conf = Confluence()
-    page = conf.get_page() 
+    conf.get_spaces()
+    # page = conf.get_page() 
     # print(page)
     # conf.create_page(t.mmain())
     # print("done")
