@@ -1,6 +1,7 @@
 # posts pages to confluence server
 
 # from trello import Trello
+import os
 import requests
 import json
 import pprint
