@@ -16,8 +16,9 @@ if __name__ = '__main__':
      </head>'
       
     modal += head
-    modal += form('modal', 'modalChoice', 
-            'Please choose Trello list and Confluence space :')
+    modal += form('modal', 
+            'modalChoice', 
+            'Please choose Trello list and Confluence space :') 
     
 
 def form(form_id, label, title):
@@ -35,8 +36,10 @@ def form(form_id, label, title):
     html += select('confluence', 'confSpace', spaces)
     html += button('submit', 'mod-primary', 'Create Page!')
 
-    # close
-    html += '</select></form>'
+    # close form
+    html += '</form>'
+
+    html += '<script src="{}"></script>'.format('./js/modal.js')
     
     pprint(html)
     return html
