@@ -45,15 +45,19 @@ class Trello:
         resp = requests.get(url, params=self.params, data=self.arguments)
         return resp.json()
        
-    def mmain(self):
+    def make_page(self, list_id):
         """main functionality on Trello side.
         prompts user to choose a list,
         gets all cards on list,
         and returns formed pageData from cards
         """
-        list_id, list_name = self.prompt_list()
+        # list_id input is brought from js
+        # list_id, list_name = self.prompt_list()
+        
         cards = self.get_a_on_b(a='cards', b='lists', b_id=list_id)
         # pprint(cards) #TEST
+
+        # need a way to find list_name.
 
         page = self.list_to_page(cards, list_name) 
         # pprint(page) #TEST
