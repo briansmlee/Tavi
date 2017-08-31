@@ -4,13 +4,14 @@
 import requests
 import json
 import pprint
-from settings import conf_home, conf_auth
+from settings import CONF_ID, CONF_PW, CONF_HOME
 
 class Confluence:
     """ Confluence class for using Server REST API """
-    # CLASS VARS 
-    auth = conf_auth 
-    base_addr = conf_home # base address for API calls
+    
+    # imported from settings (env file)
+    auth = (CONF_ID, CONF_PW) 
+    base_addr = CONF_HOME # base address for API calls
     create_addr = base_addr + '/rest/api/content/' # addr for creating content
     headers = ({'Content-Type' : 'application/json'})
     # headers_admin = ('admin' , 'admin')

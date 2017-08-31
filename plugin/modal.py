@@ -55,8 +55,8 @@ def select(name, s_id, options):
     html = '<select name="{}" id="{}">'.format(name, s_id)
     
     # add each list option to form
-    for name in options.keys():  # duck_typing here...
-        line = '<option value="{}">{}</option>'.format(name, name)
+    for name, key_or_id in options:  
+        line = '<option value="{}">{}</option>'.format(key_or_id, name)
         html += line
     
     html += '<\select>'
