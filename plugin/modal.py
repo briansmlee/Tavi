@@ -22,6 +22,8 @@ if __name__ = '__main__':
     
 
 def form(form_id, label, title):
+    trel = Trello()
+    conf = Confluence()
     """
     makes form
     options is a dict?
@@ -31,8 +33,12 @@ def form(form_id, label, title):
     form = '<form id="{}">'.format(form_id)
     label = '<label for="{}">{}</label>'.format(label, title)
 
-    # generalize below using for options in options_list... 
+    # generalize below using "for options in options_list"
+    resp = trel.get_a_on_b(a='lists', b='boards', b_id=board_id)
+    lists = { l['name'] : l['id'] for l in resp }
     html += select('trello', 'trelloList', lists)
+
+    spaces = conf.get_spaces()
     html += select('confluence', 'confSpace', spaces)
     html += button('submit', 'mod-primary', 'Create Page!')
 
@@ -49,9 +55,8 @@ def select(name, s_id, options):
     html = '<select name="{}" id="{}">'.format(name, s_id)
     
     # add each list option to form
-    # enumerate? spaces in name may not be helpful
-    for item in options:
-        line = '<option value="{}">{}</option>'.format(item['id'], name['name'])
+    for name in options.keys():  # duck_typing here...
+        line = '<option value="{}">{}</option>'.format(name, name)
         html += line
     
     html += '<\select>'

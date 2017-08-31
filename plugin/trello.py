@@ -64,6 +64,15 @@ class Trello:
         
         return page
 
+
+    def lists_in_board(board_id):
+        """
+        returns all lists in the board that card belongs to
+        """
+        
+        
+        
+
     def prompt_list(self):
         """
         prompts user to choose a list 
